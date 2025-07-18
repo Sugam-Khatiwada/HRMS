@@ -31,7 +31,51 @@ app.use('/api',authRouter)
 
 
 
+
+
+// for mail
+
+import nodemailer from "nodemailer";
+
+app.post('/send-email', async (req, res) => {
+    try {
+        // Create transporter
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'np05cp4a240169@iic.edu.np',
+                pass: 'zvvp swog uawr knqi'
+            }
+        });
+        
+        // Email options
+        const mailOptions = {
+            from: 'np05cp4a240169@iic.edu.np',
+            to: '23bhandarianil@gmail.com',
+            subject: 'Test Email from Node.js',
+            text: 'Hello! This is a test email sent using Nodemailer and Node.js.',
+            html: '<p>Hello! This is a <b>test email</b> sent using <i>Nodemailer</i> and Node.js.</p>'
+        };
+        
+        // Send mail
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return console.log('Error:', error);
+            }
+            console.log('Email sent:', info.response);
+        });
+        
+        res.status(200).send("Email sent successfully");
+        
+    } catch (error) {
+        console.error("Error sending email:", error);
+        res.status(500).send("Error sending email");
+    }
+});
+
+
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
-})
-
+});
